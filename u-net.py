@@ -2,6 +2,7 @@ import os
 import numpy as np
 import torch
 import torch.nn as nn
+from tqdm import tqdm
 import torchvision.transforms as transforms
 from torch.utils.data import Dataset, DataLoader
 from PIL import Image
@@ -100,7 +101,10 @@ def train_model(model, dataloader, epochs=10, lr=0.001):
         model.train()
         running_loss = 0.0
 
-        for images, masks in dataloader:
+        print(f"\nEpoch {epoch + 1}/{epochs}")
+        progress_bar = tqdm(dataloader, desc="Training", unit="batch")
+
+        for images, masks in progress_bar:
             images = images.to(device)
             masks = masks.to(device)
 
@@ -114,8 +118,9 @@ def train_model(model, dataloader, epochs=10, lr=0.001):
             optimizer.step()
 
             running_loss += loss.item()
+            progress_bar.set_postfix(loss=loss.item())
 
-        print(f"Epoch {epoch+1}/{epochs}, Loss: {running_loss/len(dataloader)}")
+        print(f"Epoch {epoch + 1}/{epochs}, Loss: {running_loss / len(dataloader):.4f}")
 
 # Load dữ liệu và huấn luyện
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
