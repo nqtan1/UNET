@@ -10,6 +10,7 @@ This is a personal project for educational purposes. Based on the training loss 
 
 200 epochs: accuracy = 0.7 and loss = 0.48
  
+![Training Loss](img/loss/training_loss.png)
 
 ## Sources
 
